@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+  </head>
+  <body>
+    <div class="p-4">
+      <h1>{{ movie.title }}</h1>
+      <p>
+        Genres: {% for genre in movie.genres.all %}
+        <a
+          class="list-group-item list-group-item-action"
+          href="/genre/{{genre.id}}"
+          >{{ genre.name }}</a
+        >
+        {% if not forloop.last %}, {% endif %}{% endfor %}
+      </p>
+    </div>
+    <div class="p-4">
+      {% if ratings %} {% for rating in ratings.all %}
+      <li class="list-group-item list-group-item-action">
+        User: {{ rating.user }} - Rating: {{ rating.value }}
+      </li>
+      {% endfor %} {% else %}
+      <p>No ratins yet</p>
+      {% endif %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+  </head>
+  <body>
+    {% if user.is_authenticated %} {% block content %}
+    <div class="p-4">
+      <h1>New Rating</h1>
+      <form method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <button type="submit">Save Rating</button>
+      </form>
+      {% endblock %} {% else %}
+      <div class="container py-5">
+        <h2>
+          You should login to get access
+          <a href="/register">register</a> or <a href="/login">login</a>
+        </h2>
+      </div>
+    </div>
+    {% endif %}
+  </body>
+</html>

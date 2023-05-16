@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+  </head>
+  <body>
+    {% if user.is_authenticated %}
+    <div class="p-4">
+      <h1>Movies List:</h1>
+      <div class="list-group">
+        {% if movies %} {% for movie in page_obj %}
+        <a
+          class="list-group-item list-group-item-action"
+          href="/movie/{{movie.id}}"
+          >{{ movie.title }}</a
+        >
+        {% endfor %} {% else %}
+        <p>No movies are available.</p>
+        {% endif %} {% block content %} {% endblock %}
+      </div>
+      <div>
+        <span>
+          {% if page_obj.has_previous %}
+          <a
+            style="text-decoration: none"
+            href="?page={{ page_obj.previous_page_number }}"
+            >←</a
+          >
+          {% endif %}
+          <span>
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+          {% if page_obj.has_next %}
+          <a
+            style="text-decoration: none"
+            href="?page={{ page_obj.next_page_number }}"
+            >→</a
+          >
+          {% endif %}
+        </span>
+      </div>
+    </div>
+    <div class="p-4">
+      {% if ratings %} {% for rating in ratings.all %}
+      <li class="list-group-item list-group-item-action">
+        Movie: {{ rating.movie }}, Rating: {{ rating.value }}, User: {{
+        rating.user }}
+      </li>
+      {% endfor %} {% else %}
+      <p>No ratins yet</p>
+      {% endif %}
+      <a style="text-decoration: none" href="/rating">Add rating</a>
+    </div>
+    <div class="p-4">
+      <h3>Logged as {{request.user}}</h3>
+      <a href="/logout">Logout</a>
+    </div>
+    {% else %}
+    <div class="container py-5">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Movie Lens</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Search</a>
+              </li>
+            </ul>
+            <form class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Login or Register
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="/login">Login</a></li>
+                    <li>
+                      <a class="dropdown-item" href="/register">Register</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </form>
+          </div>
+        </div>
+      </nav>
+      <h2>
+        Welcome to Movie Land application. To get access to content
+        <a href="/register">register</a> or <a href="/login">login</a>
+      </h2>
+    </div>
+    {% endif %}
+  </body>
+</html>
