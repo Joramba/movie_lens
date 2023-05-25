@@ -5,6 +5,7 @@
     {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
   </head>
   <body>
+    {% if user.is_authenticated %}
     <div class="container py-1">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
@@ -50,6 +51,7 @@
           </div>
         </div>
       </nav>
+
       <h1>{{ movie.title }}</h1>
       <p>
         Genres: {% for genre in movie.genres.all %}
@@ -69,6 +71,79 @@
         <p>No ratins yet</p>
         {% endif %}
       </div>
+      {% else %}
+      <div class="container py-1">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="/">Movie Lens</a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/"
+                    >Home</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Search</a>
+                </li>
+              </ul>
+              <form class="d-flex">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item dropdown">
+                    <a
+                      class="nav-link dropdown-toggle"
+                      href="#"
+                      id="navbarDropdown"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Login or Register
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="/login">Login</a></li>
+                      <li>
+                        <a class="dropdown-item" href="/register">Register</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </form>
+            </div>
+          </div>
+        </nav>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+              <img src="{{ movie.img_url }}" alt="{{ movie.title }}" />
+            </div>
+            <div class="col-md-8">
+              <h2>Title: {{ movie.title }}</h2>
+              <p>Year: {{ movie.year }}</p>
+              <p>Audience Rating: {{ movie.audience_rating }}</p>
+              <p>Critic Rating: {{ movie.critic_rating }}</p>
+              <div class="my-3">
+                {% for genre in movie.genres.all %}
+                <span class="badge bg-secondary">{{ genre.name }}</span>
+                {% endfor %}
+              </div>
+              <p>Comments: </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
     </div>
   </body>
 </html>
