@@ -52,14 +52,27 @@
         </div>
       </nav>
       <div class="p-4">
-        <h1>Movies List:</h1>
-        <div class="list-group">
+        <div class="row row-cols-2 row-cols-md-2 g-5 gap-5">
           {% if movies %} {% for movie in page_obj %}
-          <a
-            class="list-group-item list-group-item-action"
-            href="/movie/{{movie.id}}"
-            >{{ movie.title }}</a
-          >
+          <div class="card" style="width: 18rem">
+            <img
+              src="{{ movie.img_url }}"
+              class="card-img-top"
+              alt="{{ movie.title }}"
+            />
+            <div class="card-body flex-column flex">
+              <h5 class="card-title">{{ movie.title }}</h5>
+              <div class="my-3">
+                {% for genre in movie.genres.all %}
+                <span class="badge bg-secondary">{{ genre.name }}</span>
+                {% endfor %}
+              </div>
+              <a href="/movie/{{movie.id}}" class="btn btn-primary text-center"
+                >Details</a
+              >
+            </div>
+          </div>
+
           {% endfor %} {% else %}
           <p>No movies are available.</p>
           {% endif %} {% block content %} {% endblock %}
@@ -89,8 +102,8 @@
       <div class="p-4">
         {% if ratings %} {% for rating in ratings.all %}
         <li class="list-group-item list-group-item-action">
-          Movie: {{ rating.movie }}, Rating: {{ rating.value }}, User: {{
-          rating.user }}
+          Movie: {{ rating.movie }}, Rating: {{ rating.value }}, User: 
+          {{ rating.user }}
         </li>
         {% endfor %} {% else %}
         <p>No ratins yet</p>
@@ -172,8 +185,7 @@
               {% endfor %}
             </div>
             <a href="/movie/{{movie.id}}" class="btn btn-primary text-center"
-              >Details</a
-            >
+              >Details</a>
           </div>
         </div>
         {% endfor %} {% else %}

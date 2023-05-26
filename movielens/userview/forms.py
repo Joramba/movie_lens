@@ -2,10 +2,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth import login
-from .models import Movie, Genre, Rating
+from .models import Movie, Genre, Rating, Comment
+
 
 class NewUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
+
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2")
@@ -19,7 +21,8 @@ class NewUserForm(UserCreationForm):
 
 
 class RatingForm(forms.ModelForm):
-    movie = forms.ModelChoiceField(queryset=Movie.objects.all(), empty_label="Choose a movie")
+    movie = forms.ModelChoiceField(
+        queryset=Movie.objects.all(), empty_label="Choose a movie")
     value = forms.IntegerField(min_value=1, max_value=5)
 
     class Meta:
@@ -37,3 +40,27 @@ class RatingForm(forms.ModelForm):
         if commit:
             rating.save()
         return rating
+
+
+class CommentForm(forms.ModelForm):
+    user_review = forms.CharField(widget=forms.Textarea(),
+                                  label='Your Review')
+
+    class Meta:
+        model = Comment
+        fields = ('user_review',)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        self.movie = kwargs.pop('movie', None)
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['user_review'].label = 'Your Review'  
+
+    def save(self, commit=True):
+        comment = super().save(commit=False)
+        comment.user = self.user
+        comment.movie = self.movie
+
+        if commit:
+            comment.save()
+        return comment

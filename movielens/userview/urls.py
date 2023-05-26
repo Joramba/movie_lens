@@ -23,6 +23,7 @@ urlpatterns = [
     path("genre/<int:genre_id>", views.view_genre, name="genre"),
     path("movie/<int:movie_id>", views.view_movie, name="movie"),
     path("rating/", views.add_rating, name="rating"),
+    path("comment/create/<int:movie_id>", views.create_comment, name="comment"),
     path("register/", views.register_request, name="register"),
     path('login/', auth_views.LoginView.as_view(template_name='userview/login.html'), name="login"),
     path('logout/', auth_views.LogoutView.as_view(template_name='userview/logout.html'), name="logout")

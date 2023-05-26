@@ -2,6 +2,10 @@
 <html>
   <head>
     <title>{% block title %}{% endblock %}</title>
+    <script
+      src="https://kit.fontawesome.com/3392d1b6f5.js"
+      crossorigin="anonymous"
+    ></script>
     {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
   </head>
   <body>
@@ -51,26 +55,42 @@
           </div>
         </div>
       </nav>
-
-      <h1>{{ movie.title }}</h1>
-      <p>
-        Genres: {% for genre in movie.genres.all %}
-        <a
-          class="list-group-item list-group-item-action"
-          href="/genre/{{genre.id}}"
-          >{{ genre.name }}</a
-        >
-        {% if not forloop.last %}, {% endif %}{% endfor %}
-      </p>
-      <div class="pt-3">
-        {% if ratings %} {% for rating in ratings.all %}
-        <li class="list-group-item list-group-item-action">
-          User: {{ rating.user }} - Rating: {{ rating.value }}
-        </li>
-        {% endfor %} {% else %}
-        <p>No ratins yet</p>
-        {% endif %}
+      <div class="container mt-4">
+        <div class="row">
+          <div class="col-md-4">
+            <img src="{{ movie.img_url }}" alt="{{ movie.title }}" />
+          </div>
+          <div class="col-md-8">
+            <h2>Title: {{ movie.title }}</h2>
+            <p>Year: {{ movie.year }}</p>
+            <p>Audience Rating: {{ movie.audience_rating }}</p>
+            <p>Critic Rating: {{ movie.critic_rating }}</p>
+            <div class="my-3">
+              {% for genre in movie.genres.all %}
+              <span class="badge bg-secondary">{{ genre.name }}</span>
+              {% endfor %}
+            </div>
+            <a href="/comment/create/{{ movie.id}}" class="btn btn-primary text-center mb-3"
+              >Add comment</a
+            >
+            <p>Comments:</p>
+            {% if comments %} {% for comment in comments.all %}
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center gap-3">
+                  <i class="fa-solid fa-user"></i>
+                  <h5 class="card-title">{{ comment.user }}</h5>
+                </div>
+                <p class="card-text mt-3">{{ comment.user_review }}</p>
+              </div>
+            </div>
+            {% endfor %} {% else %}
+            <p>No comment yet</p>
+            {% endif %}
+          </div>
+        </div>
       </div>
+
       {% else %}
       <div class="container py-1">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -123,7 +143,7 @@
             </div>
           </div>
         </nav>
-        <div class="container">
+        <div class="container mt-4">
           <div class="row">
             <div class="col-md-4">
               <img src="{{ movie.img_url }}" alt="{{ movie.title }}" />
@@ -138,7 +158,20 @@
                 <span class="badge bg-secondary">{{ genre.name }}</span>
                 {% endfor %}
               </div>
-              <p>Comments: </p>
+              <p>Comments:</p>
+              {% if comments %} {% for comment in comments.all %}
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex align-items-center gap-3">
+                    <i class="fa-solid fa-user"></i>
+                    <h5 class="card-title">{{ comment.user }}</h5>
+                  </div>
+                  <p class="card-text mt-3">{{ comment.user_review }}</p>
+                </div>
+              </div>
+              {% endfor %} {% else %}
+              <p>No comment yet</p>
+              {% endif %}
             </div>
           </div>
         </div>

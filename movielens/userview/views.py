@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.template import loader
-from .models import Movie, Genre, Rating
+from .models import Movie, Genre, Rating, Comment
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from .forms import NewUserForm, RatingForm
+from .forms import NewUserForm, RatingForm, CommentForm
 
 from django.contrib import messages
 
@@ -15,12 +15,11 @@ from django.contrib.auth import login
 def index(request: HttpRequest):
     user = request.user
     print(user)
-    
-    
-    if(request.user.is_anonymous):  
+
+    if (request.user.is_anonymous):
         ratings = None
-    else: 
-        ratings = Rating.objects.filter(user = user)
+    else:
+        ratings = Rating.objects.filter(user=user)
 
     movies = Movie.objects.order_by('-title')
     template = loader.get_template('userview/index.html')
@@ -28,7 +27,7 @@ def index(request: HttpRequest):
     object_list = Movie.objects.all()
     page_num = request.GET.get('page', 1)
 
-    paginator = Paginator(object_list, 3)  # 1 employees per page
+    paginator = Paginator(object_list, 10)  # 1 employees per page
 
     try:
         page_obj = paginator.page(page_num)
@@ -52,7 +51,6 @@ def view_genre(request: HttpRequest, genre_id):
     genres = Genre.objects.order_by('-name')
     template = loader.get_template('userview/genre.html')
 
-
     genre = get_object_or_404(Genre, id=genre_id)
     context = {
         'genre': genre
@@ -65,11 +63,13 @@ def view_movie(request: HttpRequest, movie_id):
     template = loader.get_template('userview/movie.html')
 
     movie = get_object_or_404(Movie, id=movie_id)
-    ratings = Rating.objects.filter(movie = movie)
+    ratings = Rating.objects.filter(movie=movie)
+    comments = Comment.objects.filter(movie=movie)
 
     context = {
         'movie': movie,
-        'ratings': ratings
+        'ratings': ratings,
+        'comments': comments
     }
     return HttpResponse(template.render(context, request))
 
@@ -81,8 +81,22 @@ def add_rating(request: HttpRequest):
             form.save()
             return redirect('index')
     else:
-        form = RatingForm(user=request.user)    
+        form = RatingForm(user=request.user)
     return render(request, 'userview/rating.html', {'form': form})
+
+
+def create_comment(request: HttpRequest, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST, user=request.user, movie=movie)
+        if form.is_valid():
+            form.save()
+            return redirect('movie', movie_id=movie.id)
+    else:
+        form = CommentForm(user=request.user, movie=movie)
+
+    return render(request, 'userview/comment.html', {'form': form, 'movie': movie})
 
 
 class IndexView(generic.ListView):
