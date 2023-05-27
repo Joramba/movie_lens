@@ -4,7 +4,7 @@ from django.template import loader
 from .models import Movie, Genre, Rating, Comment
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from .forms import NewUserForm, RatingForm, CommentForm
+from .forms import NewUserForm, RatingForm, CommentForm, MovieForm
 
 from django.contrib import messages
 
@@ -47,6 +47,20 @@ def index(request: HttpRequest):
     return HttpResponse(template.render(context, request))
 
 
+def edit_movie(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+
+    if request.method == 'POST':
+        form = MovieForm(request.POST, instance=movie)
+        if form.is_valid():
+            form.save()
+            return redirect('movie', movie_id=movie.id)
+    else:
+        form = MovieForm(instance=movie)
+
+    return render(request, 'userview/edit_movie.html', {'form': form})
+
+
 def view_genre(request: HttpRequest, genre_id):
     genres = Genre.objects.order_by('-name')
     template = loader.get_template('userview/genre.html')
@@ -72,6 +86,18 @@ def view_movie(request: HttpRequest, movie_id):
         'comments': comments
     }
     return HttpResponse(template.render(context, request))
+
+
+def add_movie(request):
+    if request.method == 'POST':
+        form = MovieForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('index')  # Redirect to the movie list page after successful addition
+    else:
+        form = MovieForm()
+
+    return render(request, 'userview/add_movie.html', {'form': form})
 
 
 def add_rating(request: HttpRequest):

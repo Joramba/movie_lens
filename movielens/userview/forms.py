@@ -64,3 +64,8 @@ class CommentForm(forms.ModelForm):
         if commit:
             comment.save()
         return comment
+
+class MovieForm(forms.ModelForm):
+    class Meta:
+        model = Movie
+        fields = ('title', 'imdbid', 'year', 'img_url', 'audience_rating', 'critic_rating', 'genres')
