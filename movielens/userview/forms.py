@@ -65,7 +65,15 @@ class CommentForm(forms.ModelForm):
             comment.save()
         return comment
 
+
 class MovieForm(forms.ModelForm):
     class Meta:
         model = Movie
         fields = ('title', 'imdbid', 'year', 'img_url', 'audience_rating', 'critic_rating', 'genres')
+
+
+class MovieSearchForm(forms.Form):
+    genre_choices = [(genre.name, genre.name) for genre in Genre.objects.all()]
+    genre = forms.ChoiceField(choices=genre_choices, required=False, initial='')
+    title = forms.CharField(required=False)
+    rating = forms.FloatField(required=False)

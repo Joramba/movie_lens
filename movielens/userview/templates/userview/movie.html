@@ -31,7 +31,7 @@
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Search</a>
+                <a class="nav-link" href="./search/">Search</a>
               </li>
             </ul>
             <form class="d-flex">
@@ -58,13 +58,17 @@
       <div class="container mt-4">
         <div class="row">
           <div class="col-md-4">
-            <img class="w-100" src="{{ movie.img_url }}" alt="{{ movie.title }}" />
+            <img
+              class="w-100"
+              src="{{ movie.img_url }}"
+              alt="{{ movie.title }}"
+            />
             {% if user.is_superuser %}
             <a
               href="/movie/edit/{{ movie.id}}"
               class="btn btn-primary text-center mt-3"
               ><i class="fa-solid fa-pen-to-square"></i> Edit film</a
-            >  
+            >
             {% endif %}
           </div>
           <div class="col-md-8">
@@ -124,7 +128,7 @@
                   >
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Search</a>
+                  <a class="nav-link" href="./search/">Search</a>
                 </li>
               </ul>
               <form class="d-flex">
@@ -155,7 +159,11 @@
         <div class="container mt-4">
           <div class="row">
             <div class="col-md-4">
-              <img src="{{ movie.img_url }}" alt="{{ movie.title }}" />
+              <img
+                class="w-100"
+                src="{{ movie.img_url }}"
+                alt="{{ movie.title }}"
+              />
             </div>
             <div class="col-md-8">
               <h2>Title: {{ movie.title }}</h2>

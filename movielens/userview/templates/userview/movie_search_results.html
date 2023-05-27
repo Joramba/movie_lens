@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <script
+      src="https://kit.fontawesome.com/3392d1b6f5.js"
+      crossorigin="anonymous"
+    ></script>
+    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+  </head>
+  <body>
+    {% if user.is_authenticated %}
+    <div class="container py-1">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Movie Lens</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href=".">Search</a>
+              </li>
+            </ul>
+            <form class="d-flex">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <div class="p-0">
+                  <h3>Logged as {{request.user}}</h3>
+                </div>
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link"
+                    href="/logout"
+                    id="navbarLogout"
+                    role="button"
+                    aria-expanded="false"
+                  >
+                    Logout
+                  </a>
+                </li>
+              </ul>
+            </form>
+          </div>
+        </div>
+      </nav>
+      <h1>Movie Search Results</h1>
+      <div class="p-4">
+      {% if movies %}
+        <div class="row row-cols-2 row-cols-md-2 g-5 gap-5">
+          {% for movie in movies %}
+          <div class="card" style="width: 18rem">
+            <img
+              style="height: 70%; object-fit:cover"
+              src="{{ movie.img_url }}"
+              class="card-img-top"
+              alt="{{ movie.title }}"
+              
+            />
+            <div class="card-body flex-column flex">
+              <h5 class="card-title">{{ movie.title }}</h5>
+              <div class="my-3">
+                {% for genre in movie.genres.all %}
+                <span class="badge bg-secondary">{{ genre.name }}</span>
+                {% endfor %}
+              </div>
+              <a href="/movie/{{movie.id}}" class="btn btn-primary text-center"
+                >Details</a
+              >
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+  
+      {% else %}
+        <p>No movies found.</p>
+      {% endif %}
+    </div>
+  {% else %} 
+  <div class="container py-1">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">Movie Lens</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href=".">Search</a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Login or Register
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/login">Login</a></li>
+                  <li>
+                    <a class="dropdown-item" href="/register">Register</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <h1>Movie Search Results</h1>
+    <div class="p-4">
+    {% if movies %}
+      <div class="row row-cols-2 row-cols-md-2 g-5 gap-5">
+        {% for movie in movies %}
+        <div class="card" style="width: 18rem">
+          <img
+            style="height: 70%; object-fit:cover"
+            src="{{ movie.img_url }}"
+            class="card-img-top"
+            alt="{{ movie.title }}"
+            
+          />
+          <div class="card-body flex-column flex">
+            <h5 class="card-title">{{ movie.title }}</h5>
+            <div class="my-3">
+              {% for genre in movie.genres.all %}
+              <span class="badge bg-secondary">{{ genre.name }}</span>
+              {% endfor %}
+            </div>
+            <a href="/movie/{{movie.id}}" class="btn btn-primary text-center"
+              >Details</a
+            >
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% else %}
+      <p>No movies found.</p>
+    {% endif %}
+  </div>
+{% endif %}
+</div>

@@ -4,7 +4,7 @@ from django.template import loader
 from .models import Movie, Genre, Rating, Comment
 from django.views import generic
 from django.shortcuts import get_object_or_404
-from .forms import NewUserForm, RatingForm, CommentForm, MovieForm
+from .forms import NewUserForm, RatingForm, CommentForm, MovieForm, MovieSearchForm
 
 from django.contrib import messages
 
@@ -45,6 +45,32 @@ def index(request: HttpRequest):
     }
 
     return HttpResponse(template.render(context, request))
+
+def movie_search(request):
+    form = MovieSearchForm()
+
+    if request.method == 'POST':
+        form = MovieSearchForm(request.POST)
+        if form.is_valid():
+            if form.is_valid():
+                genre = form.cleaned_data.get('genre')
+                title = form.cleaned_data.get('title')
+                rating = form.cleaned_data.get('rating')
+
+                movies = Movie.objects.all()
+
+                if genre:
+                    movies = movies.filter(genres__name__icontains=genre)
+                if title:
+                    movies = movies.filter(title__icontains=title)
+                if rating is not None:
+                    movies = movies.filter(audience_rating__gte=rating)
+
+
+            return render(request, 'userview/movie_search_results.html', {'form': form, 'movies': movies})
+
+    return render(request, 'userview/movie_search.html', {'form': form})
+
 
 
 def edit_movie(request, movie_id):

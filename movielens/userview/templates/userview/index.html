@@ -27,7 +27,7 @@
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Search</a>
+                <a class="nav-link" href="movie/search/">Search</a>
               </li>
               {% if user.is_superuser %}
               <li class="nav-item">
@@ -61,7 +61,7 @@
           {% if movies %} {% for movie in page_obj %}
           <div class="card" style="width: 18rem">
             <img
-              style="height: 70%"
+              style="height: 70%; object-fit:cover"
               src="{{ movie.img_url }}"
               class="card-img-top"
               alt="{{ movie.title }}"
@@ -140,7 +140,7 @@
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Search</a>
+                <a class="nav-link" href="movie/search/">Search</a>
               </li>
             </ul>
             <form class="d-flex">
@@ -180,6 +180,7 @@
         {% if movies %} {% for movie in movies %}
         <div class="card" style="width: 18rem">
           <img
+            style="height: 70%; object-fit:cover"
             src="{{ movie.img_url }}"
             class="h-70 card-img-top"
             alt="{{ movie.title }}"
