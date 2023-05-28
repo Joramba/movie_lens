@@ -27,7 +27,7 @@ def index(request: HttpRequest):
     object_list = Movie.objects.all()
     page_num = request.GET.get('page', 1)
 
-    paginator = Paginator(object_list, 10)  # 1 employees per page
+    paginator = Paginator(object_list, 12)  # 12 employees per page
 
     try:
         page_obj = paginator.page(page_num)

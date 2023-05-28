@@ -44,6 +44,52 @@ def import_users():
     print('Data import completed.')
 
 
+def import_movies():
+    directory_path = '../data/picked_movies/'  # Replace with the actual directory path
+
+    for filename in os.listdir(directory_path):
+        file_path = os.path.join(directory_path, filename)
+
+        with open(file_path, 'r', encoding='latin-1') as file:
+            try:
+                data = json.load(file)
+            except json.JSONDecodeError as e:
+                print(f"Error loading JSON from file {file_path}: {e}")
+                continue
+
+        title = data['title']
+        director = data['director']
+        year = data['year']
+        imdbLink = data['imdbLink']
+        image = data['image']
+        description = data['description']
+        genres = data['genre'].split(', ')
+
+        movie = Movie(
+                title=title,
+                director=director,
+                year=year,
+                imdbLink=imdbLink,
+                image=image,
+                description=description
+            )
+
+        movie.save()
+
+        for genre_name in genres:
+            genre_objects = Genre.objects.filter(name=genre_name)
+            if genre_objects.exists():
+                genre = genre_objects.first()
+            else:
+                genre = Genre.objects.create(name=genre_name)
+            movie.genres.add(genre)
+
+        print(f'Movie {title} imported.')
+
+
+    print('Data import completed.')
+
+
 
 def main():
     """Run administrative tasks."""
