@@ -55,8 +55,8 @@
       <form method="post">
         {% csrf_token %}
         <div class="d-flex flex-column mb-4">
-          {{ form.user_review.label_tag }}
-          {{ form.user_review }}
+          {{ form.comment.label_tag }}
+          {{ form.comment }}
         </div>
         <button class="btn btn-primary text-center" type="submit">
           Save Comment

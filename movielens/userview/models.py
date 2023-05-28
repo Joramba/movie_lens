@@ -23,7 +23,7 @@ class Movie(models.Model):
 
 
 class Rating(models.Model):
-    value = models.IntegerField()
+    rating = models.IntegerField()
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
@@ -33,5 +33,5 @@ class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    user_review = models.TextField()
+    comment = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)

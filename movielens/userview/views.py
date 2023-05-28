@@ -141,8 +141,10 @@ def create_comment(request: HttpRequest, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
 
     if request.method == 'POST':
+        print(1)
         form = CommentForm(request.POST, user=request.user, movie=movie)
         if form.is_valid():
+            print(2)
             form.save()
             return redirect('movie', movie_id=movie.id)
     else:

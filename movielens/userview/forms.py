@@ -27,7 +27,7 @@ class RatingForm(forms.ModelForm):
 
     class Meta:
         model = Rating
-        fields = ('movie', 'value')
+        fields = ('movie', 'rating')
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
@@ -43,18 +43,18 @@ class RatingForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    user_review = forms.CharField(widget=forms.Textarea(),
+    comment = forms.CharField(widget=forms.Textarea(),
                                   label='Your Review')
 
     class Meta:
         model = Comment
-        fields = ('user_review',)
+        fields = ('comment',)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         self.movie = kwargs.pop('movie', None)
         super(CommentForm, self).__init__(*args, **kwargs)
-        self.fields['user_review'].label = 'Your Review'  
+        self.fields['comment'].label = 'Your Review'  
 
     def save(self, commit=True):
         comment = super().save(commit=False)
