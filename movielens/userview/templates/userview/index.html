@@ -60,12 +60,12 @@
         <div class="row row-cols-2 row-cols-md-2 g-5 gap-5">
           {% if movies %} {% for movie in page_obj %}
           <div class="card" style="width: 18rem">
+            {% load static %}
             <img
-              style="height: 70%; object-fit:cover"
-              src="{{ movie.img_url }}"
+              style="height: 70%; object-fit: cover"
+              src="{% static "movielens/picked_movies/"|add:movie.image %}"
               class="card-img-top"
               alt="{{ movie.title }}"
-              
             />
             <div class="card-body flex-column flex">
               <h5 class="card-title">{{ movie.title }}</h5>
@@ -73,6 +73,9 @@
                 {% for genre in movie.genres.all %}
                 <span class="badge bg-secondary">{{ genre.name }}</span>
                 {% endfor %}
+              </div>
+              <div class="my-3">
+                {{ movie.description|slice:":70" }} ...
               </div>
               <a href="/movie/{{movie.id}}" class="btn btn-primary text-center"
                 >Details</a
@@ -180,9 +183,9 @@
         {% if movies %} {% for movie in movies %}
         <div class="card" style="width: 18rem">
           <img
-            style="height: 70%; object-fit:cover"
-            src="{{ movie.img_url }}"
-            class="h-70 card-img-top"
+            style="height: 70%; object-fit: cover"
+            src="{% static "movielens/picked_movies/"|add:movie.image %}"
+            class="card-img-top"
             alt="{{ movie.title }}"
           />
           <div class="card-body flex-column flex">
@@ -191,6 +194,9 @@
               {% for genre in movie.genres.all %}
               <span class="badge bg-secondary">{{ genre.name }}</span>
               {% endfor %}
+            </div>
+            <div class="my-3">
+              {{ movie.description|slice:":70" }} ...
             </div>
             <a href="/movie/{{movie.id}}" class="btn btn-primary text-center"
               >Details</a>

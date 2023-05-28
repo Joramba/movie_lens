@@ -7,6 +7,7 @@
       crossorigin="anonymous"
     ></script>
     {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+    {% load static %}
   </head>
   <body>
     {% if user.is_authenticated %}
@@ -60,7 +61,7 @@
           <div class="col-md-4">
             <img
               class="w-100"
-              src="{{ movie.img_url }}"
+              src="{% static "movielens/picked_movies/"|add:movie.image %}"
               alt="{{ movie.title }}"
             />
             {% if user.is_superuser %}
@@ -72,10 +73,15 @@
             {% endif %}
           </div>
           <div class="col-md-8">
-            <h2>Title: {{ movie.title }}</h2>
+            <h2>{{ movie.title }}</h2>
             <p>Year: {{ movie.year }}</p>
-            <p>Audience Rating: {{ movie.audience_rating }}</p>
-            <p>Critic Rating: {{ movie.critic_rating }}</p>
+            <p>Director: {{ movie.director }}</p>
+            <p>ImdbLink: <a
+              target="_blank"
+              href="{{ movie.imdbLink }}"
+              >{{ movie.imdbLink }}</a
+            ></p>
+            <p>Description: {{ movie.description }}</p>
             <div class="my-3">
               {% for genre in movie.genres.all %}
               <span class="badge bg-secondary">{{ genre.name }}</span>
@@ -161,22 +167,27 @@
             <div class="col-md-4">
               <img
                 class="w-100"
-                src="{{ movie.img_url }}"
+                src="{% static "movielens/picked_movies/"|add:movie.image %}"
                 alt="{{ movie.title }}"
               />
             </div>
             <div class="col-md-8">
-              <h2>Title: {{ movie.title }}</h2>
+              <h2>{{ movie.title }}</h2>
               <p>Year: {{ movie.year }}</p>
-              <p>Audience Rating: {{ movie.audience_rating }}</p>
-              <p>Critic Rating: {{ movie.critic_rating }}</p>
+              <p>Director: {{ movie.director }}</p>
+              <p>ImdbLink: <a
+                target="_blank"
+                href="{{ movie.imdbLink }}"
+                >{{ movie.imdbLink }}</a
+              ></p>
+              <p>Description: {{ movie.description }}</p>
               <div class="my-3">
                 {% for genre in movie.genres.all %}
                 <span class="badge bg-secondary">{{ genre.name }}</span>
                 {% endfor %}
               </div>
-              <p>Comments:</p>
               {% if comments %} {% for comment in comments.all %}
+              <p>Comments:</p>
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center gap-3">

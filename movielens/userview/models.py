@@ -11,11 +11,11 @@ class Genre(models.Model):
 
 class Movie(models.Model):
     title = models.CharField(max_length=1000)
-    imdbid = models.CharField(max_length=100, default='N/A')
-    year = models.IntegerField(default=0)
-    img_url = models.URLField(max_length=600, default='N/A')
-    audience_rating = models.FloatField()
-    critic_rating = models.FloatField()
+    year = models.IntegerField()
+    director = models.CharField(max_length=300)
+    imdbLink = models.URLField()
+    image = models.CharField(max_length=100)
+    description = models.TextField(default='Default description')
     genres = models.ManyToManyField(Genre)
 
     def __str__(self):

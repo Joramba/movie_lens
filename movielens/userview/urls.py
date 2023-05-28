@@ -17,6 +17,8 @@ Including another URLconf
 from django.urls import include, path
 from . import views
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -35,4 +37,4 @@ urlpatterns = [
     # path("", views.IndexView.as_view(), name="index"),
     # path("genre/<int:pk>", views.GenreView.as_view(), name="index"),
     # path("movie/<int:pk>", views.MovieView.as_view(), name="index"),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -69,7 +69,7 @@ class CommentForm(forms.ModelForm):
 class MovieForm(forms.ModelForm):
     class Meta:
         model = Movie
-        fields = ('title', 'imdbid', 'year', 'img_url', 'audience_rating', 'critic_rating', 'genres')
+        fields = ('title', 'year', 'director', 'imdbLink', 'image', 'description', 'genres')
 
 
 class MovieSearchForm(forms.Form):

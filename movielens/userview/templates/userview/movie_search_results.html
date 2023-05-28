@@ -6,7 +6,7 @@
       src="https://kit.fontawesome.com/3392d1b6f5.js"
       crossorigin="anonymous"
     ></script>
-    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+    {% load bootstrap5 %} {% load static %}{% bootstrap_css %} {% bootstrap_javascript %}
   </head>
   <body>
     {% if user.is_authenticated %}
@@ -62,11 +62,10 @@
           {% for movie in movies %}
           <div class="card" style="width: 18rem">
             <img
-              style="height: 70%; object-fit:cover"
-              src="{{ movie.img_url }}"
+              style="height: 70%; object-fit: cover"
+              src="{% static "movielens/picked_movies/"|add:movie.image %}"
               class="card-img-top"
               alt="{{ movie.title }}"
-              
             />
             <div class="card-body flex-column flex">
               <h5 class="card-title">{{ movie.title }}</h5>
@@ -75,9 +74,11 @@
                 <span class="badge bg-secondary">{{ genre.name }}</span>
                 {% endfor %}
               </div>
+              <div class="my-3">
+                {{ movie.description|slice:":70" }} ...
+              </div>
               <a href="/movie/{{movie.id}}" class="btn btn-primary text-center"
-                >Details</a
-              >
+                >Details</a>
             </div>
           </div>
           {% endfor %}
@@ -147,11 +148,10 @@
         {% for movie in movies %}
         <div class="card" style="width: 18rem">
           <img
-            style="height: 70%; object-fit:cover"
-            src="{{ movie.img_url }}"
+            style="height: 70%; object-fit: cover"
+            src="{% static "movielens/picked_movies/"|add:movie.image %}"
             class="card-img-top"
             alt="{{ movie.title }}"
-            
           />
           <div class="card-body flex-column flex">
             <h5 class="card-title">{{ movie.title }}</h5>
@@ -160,9 +160,11 @@
               <span class="badge bg-secondary">{{ genre.name }}</span>
               {% endfor %}
             </div>
+            <div class="my-3">
+              {{ movie.description|slice:":70" }} ...
+            </div>
             <a href="/movie/{{movie.id}}" class="btn btn-primary text-center"
-              >Details</a
-            >
+              >Details</a>
           </div>
         </div>
         {% endfor %}
