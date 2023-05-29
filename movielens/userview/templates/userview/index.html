@@ -3,6 +3,8 @@
   <head>
     <title>{% block title %}{% endblock %}</title>
     {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
     {% if user.is_authenticated %}
@@ -56,7 +58,48 @@
           </div>
         </div>
       </nav>
-      <div class="p-4">
+      <div class="container">
+        <h2>Your most liked Movies:</h2>
+        {% if highest_rated_movies %}
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="p-4">
+              {% load static %}
+              <div id="movieSlider" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  {% for movie in highest_rated_movies %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                      <a href="/movie/{{ movie.id }}">
+                        <img src="{% static "movielens/picked_movies/"|add:movie.image %}" class="d-block w-100" alt="{{ movie.title }}">
+                        <div class="carousel-caption">
+                          <h5>{{ movie.title }}</h5>
+                          <p>{{ movie.description }}</p>
+                        </div>
+                      </a>
+                    </div>
+                  {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#movieSlider" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#movieSlider" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        {% else %}
+          <p>Rate some movies to see information</p>
+        {% endif %}
+      </div>
+      
+      <div class="p-4"> 
+        <h2>All Movies:</h2>
         <div class="row row-cols-2 row-cols-md-2 g-5 gap-5">
           {% if movies %} {% for movie in page_obj %}
           <div class="card" style="width: 18rem">
@@ -83,7 +126,7 @@
             </div>
           </div>
 
-          {% endfor %} {% else %}
+          {% endfor %} 
           <p>No movies are available.</p>
           {% endif %} {% block content %} {% endblock %}
         </div>
@@ -112,7 +155,7 @@
       <div class="p-4">
         {% if ratings %} {% for rating in ratings.all %}
         <li class="list-group-item list-group-item-action">
-          Movie: {{ rating.movie }}, Rating: {{ rating.value }}, User: 
+          Movie: {{ rating.movie }}, Rating: {{ rating.rating }}, User: 
           {{ rating.user }}
         </li>
         {% endfor %} {% else %}

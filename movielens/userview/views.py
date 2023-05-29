@@ -10,16 +10,27 @@ from django.contrib import messages
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import login
+from django.db.models import Max
+
+
+def get_highest_rated_movies(user):
+    highest_ratings = Rating.objects.filter(user=user).aggregate(Max('rating'))
+    highest_rating = highest_ratings['rating__max']
+    highest_rated_movies = Movie.objects.filter(rating__rating=highest_rating, rating__user=user)
+    return highest_rated_movies
 
 
 def index(request: HttpRequest):
     user = request.user
     print(user)
 
+
     if (request.user.is_anonymous):
         ratings = None
+        highest_rated_movies = None
     else:
         ratings = Rating.objects.filter(user=user)
+        highest_rated_movies = get_highest_rated_movies(user=user)
 
     movies = Movie.objects.order_by('-title')
     template = loader.get_template('userview/index.html')
@@ -38,10 +49,13 @@ def index(request: HttpRequest):
         # if the page is out of range, deliver the last page
         page_obj = paginator.page(paginator.num_pages)
 
+
+    
     context = {
         'movies': movies,
         'ratings': ratings,
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'highest_rated_movies': highest_rated_movies
     }
 
     return HttpResponse(template.render(context, request))
@@ -106,10 +120,13 @@ def view_movie(request: HttpRequest, movie_id):
     ratings = Rating.objects.filter(movie=movie)
     comments = Comment.objects.filter(movie=movie)
 
+    similar_movies = movie.get_similar_movies()[:5]
+
     context = {
         'movie': movie,
         'ratings': ratings,
-        'comments': comments
+        'comments': comments,
+        'similar_movies':similar_movies
     }
     return HttpResponse(template.render(context, request))
 

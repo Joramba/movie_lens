@@ -23,7 +23,7 @@ class NewUserForm(UserCreationForm):
 class RatingForm(forms.ModelForm):
     movie = forms.ModelChoiceField(
         queryset=Movie.objects.all(), empty_label="Choose a movie")
-    value = forms.IntegerField(min_value=1, max_value=5)
+    rating = forms.IntegerField(min_value=1, max_value=5)
 
     class Meta:
         model = Rating

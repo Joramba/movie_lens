@@ -21,6 +21,10 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
+    def get_similar_movies(self):
+        similar_movies = Movie.objects.filter(genres__in=self.genres.all()).exclude(id=self.id).distinct()
+        return similar_movies
+
 
 class Rating(models.Model):
     rating = models.IntegerField()

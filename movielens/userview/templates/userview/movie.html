@@ -71,6 +71,17 @@
               ><i class="fa-solid fa-pen-to-square"></i> Edit film</a
             >
             {% endif %}
+            {% if similar_movies %}
+            <h2>Similar Movies:</h2>
+            <ul>
+                {% for movie in similar_movies %}
+                <a href="/movie/{{movie.id}}" class="text-decoration-none"
+                ><li>{{ movie.title }}</li></a>
+                {% empty %}
+                    <li>No similar movies found.</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
           </div>
           <div class="col-md-8">
             <h2>{{ movie.title }}</h2>
@@ -186,8 +197,8 @@
                 <span class="badge bg-secondary">{{ genre.name }}</span>
                 {% endfor %}
               </div>
-              {% if comments %} {% for comment in comments.all %}
               <p>Comments:</p>
+              {% if comments %} {% for comment in comments.all %}
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex align-items-center gap-3">
